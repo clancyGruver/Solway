@@ -1,0 +1,91 @@
+{
+  "id": 100,
+  "Name": {
+    "RU": "Русский справочник",
+    "EN": "English dictionary",
+    "ES": "Guia en español"
+  },
+  "columns": [
+    {
+      "RU": "Первая колонка",
+      "EN": "First column",
+      "ES": "Spanish first column"
+    },
+    {
+      "RU": "Вторая колонка",
+      "EN": "Second column",
+      "ES": "Spanish second column"
+    },
+    {
+      "RU": "Третья колонка",
+      "EN": "Third column",
+      "ES": "Spanish third column"
+    }
+  ],
+  "items": [
+    {
+      "id": 0,
+      "content": {
+        "First column": {
+          "RU": "Контент 1",
+          "EN": "Content 1",
+          "ES": "Contenido 1"
+        },
+        "Second column": {
+          "RU": "Контент 2",
+          "EN": "Content 2",
+          "ES": "Contenido 2"
+        },
+        "Third column": {
+          "RU": "Контент 3",
+          "EN": "Content 3",
+          "ES": "Contenido 3"
+        }
+      },
+      "isActive": true
+    },
+    {
+      "id": 1,
+      "content": {
+        "First column": {
+          "RU": "Контент 1-2",
+          "EN": "Content 1-2",
+          "ES": "Contenido 1-2"
+        },
+        "Second column": {
+          "RU": "Контент 2-2",
+          "EN": "Content 2-2",
+          "ES": "Contenido 2-2"
+        },
+        "Third column": {
+          "RU": "Контент 3-2",
+          "EN": "Content 3-2",
+          "ES": "Contenido 3-2"
+        }
+      },
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "content": {
+        "First column": {
+          "RU": "Контент 1-3",
+          "EN": "Content 1-3",
+          "ES": "Contenido 1-3"
+        },
+        "Second column": {
+          "RU": "Контент 2-3",
+          "EN": "Content 2-3",
+          "ES": "Contenido 2-3"
+        },
+        "Third column": {
+          "RU": "Контент 3-3",
+          "EN": "Content 3-3",
+          "ES": "Contenido 3-3"
+        }
+      },
+      "isActive": true
+    }
+  ],
+  "isActive": true
+}
