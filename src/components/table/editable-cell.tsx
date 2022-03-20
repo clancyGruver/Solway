@@ -1,45 +1,23 @@
-import { CSSProperties, useState } from "react";
-import InlineEdit from "../forms/inlie";
+import { CSSProperties } from "react";
 
 interface Props {
   text: string,
   style: CSSProperties,
-  editHandler: (s: string) => void
+  editHandler: () => void
 }
 
 const EditableCell = ({
-  text: cellContent,
+  text,
   style,
   editHandler,
 }: Props) => {
-  const [content, setContent] = useState(cellContent)
-  const [isEdit, setIsEdit] = useState(false)
-
-  const onChange = (newContent: string) => {
-    setContent(newContent);
-  };
-
-  const editHandlerEnhanced = (s: string) => {
-    setIsEdit(false);
-    editHandler(s);
-  };
-  
   return (
     <div
       style={style}
       className="border border-blue-900"
-      onDoubleClick={() => setIsEdit(true)}
+      onDoubleClick={() => editHandler()}
     >
-      {
-        isEdit
-          ? <InlineEdit
-              value={content}
-              onChange={onChange}
-              editHandler={editHandlerEnhanced}
-              focus
-            />
-          : content
-      }
+      {text}
     </div>
   );
 }

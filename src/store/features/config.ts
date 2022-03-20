@@ -14,6 +14,7 @@ export const configSlice = createSlice({
   initialState,
   reducers: {
     setEditColumnIdx: (state, { payload }) => { state.editColumnIdx = payload.idx },
+    setEditCell: (state, { payload }) => { state.editCell = payload },
     changeLang: (state, { payload }) => {
       state.lang = payload.newLang;
     },
@@ -23,7 +24,7 @@ export const configSlice = createSlice({
   },
 })
 
-export const { changeLang, setShowModal, setEditColumnIdx } = configSlice.actions;
+export const { changeLang, setShowModal, setEditColumnIdx, setEditCell } = configSlice.actions;
 
 export default configSlice.reducer;
 
@@ -37,4 +38,13 @@ export const isShowModal = createSelector(
 export const getEditColumnIdx = createSelector(
   getConfig,
   (config) => config.editColumnIdx
+);
+export const getEditCell = createSelector(
+  getConfig,
+  (config) => config.editCell,
+);
+
+export const getModalType = createSelector(
+  getConfig,
+  (config) => config.editCell ? 'cell' : 'column',
 );

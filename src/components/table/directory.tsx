@@ -7,16 +7,17 @@ import TableHeaderCell from './table-header-cell';
 import { FixedSizeGrid  as Grid, GridChildComponentProps } from 'react-window';
 import useWindowSize, { Size } from '../../hooks/useWindowSize';
 import EditableCell from './editable-cell';
+import CellEdit from '../forms/cell-edit';
+import { getModalType, setEditCell, setShowModal } from '../../store/features/config';
 
 const Cell = ({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
   const allContent = useSelector(getItems);
   const columnName = useSelector(getRawColumns)[columnIndex].EN;
-  const lang = useSelector(getLang);
   const dispatch = useDispatch();
 
-  const editHandler = (newContent: string, itemIdx: number) => {
-    dispatch(updateItem({itemIdx, newContent, lang, columnName}))
-    console.log({newContent, itemIdx})
+  const editHandler = (rowId: number, columnName: string) => {
+    dispatch(setEditCell({ rowId, columnName }));
+    dispatch(setShowModal({val: true}))
   };
 
   if (rowIndex === 0) {
@@ -32,7 +33,7 @@ const Cell = ({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
         <EditableCell
           style={style}
           text={cellContent}
-          editHandler={(s) => editHandler(s, row.id)}
+          editHandler={() => editHandler(row.id, columnName)}
         />);
     }
   }
@@ -46,6 +47,7 @@ const Directory = () => {
   const windowSize: Size = useWindowSize();
   const items = useSelector(getColumns);
   const allContent = useSelector(getItems);
+  const modalType = useSelector(getModalType);
 
   const columnsCount = items?.length;
   return (
@@ -66,7 +68,11 @@ const Directory = () => {
         : (<div>No elements</div>)
       }
       <Modal>
-        <ColumnEdit />
+        {
+          modalType === 'cell'
+            ? <CellEdit />
+            : <ColumnEdit />
+        }
       </Modal>
     </>
 )};

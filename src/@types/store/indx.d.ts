@@ -1,8 +1,8 @@
 import { Lang } from ".."
 
 type Cell = {
+  rowId: number,
   columnName: string,
-  value: ColumnItem,
 }
 
 export type ConfigState = {

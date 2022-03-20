@@ -44,8 +44,10 @@ export const dictionarySlice = createSlice({
         RU: '',
       };
 
+      const minId = Math.min(...state.items.map(({id}) => id));
+
       state.items.push({
-        id: -1,
+        id: (minId - 1),
         isActive: true,
         content: {
           ...state.columns.reduce((acc, { EN }) => ({
@@ -66,6 +68,10 @@ export const dictionarySlice = createSlice({
           },
         }
       }
+    },
+    setCellValue: (state, { payload: { rowId, columnName, data } }) => {
+      const item = state.items.filter(({ id }) => id === rowId).pop()!;
+      item.content[columnName] = data;
     },
     updateColumn: (state, { payload: { columnIdx, data } }) => {
       const newName = data.EN;
@@ -129,7 +135,13 @@ export const dictionarySlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateColumn, addColumn, updateItem, addRow } = dictionarySlice.actions;
+export const {
+  updateColumn,
+  addColumn,
+  updateItem,
+  addRow,
+  setCellValue
+} = dictionarySlice.actions;
 
 export default dictionarySlice.reducer;
 
@@ -151,6 +163,10 @@ export const getColumns = createSelector(
 export const getDictionaryName = createSelector(
   [getDictionary, getLang],
   (dict, lang: Lang) => dict.name[lang]
+);
+export const getRawItems = createSelector(
+  getDictionary,
+  (dict) => dict.items,
 );
 export const getItems = createSelector(
   [getDictionary, getLang],
