@@ -46,6 +46,7 @@ const Cell = ({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
 const Directory = () => {
   const windowSize: Size = useWindowSize();
   const items = useSelector(getColumns);
+  const allContent = useSelector(getItems);
 
   const columnsCount = items?.length;
   return (
@@ -54,15 +55,15 @@ const Directory = () => {
       {
       columnsCount
         ? (<Grid
-          columnCount={columnsCount}
-          columnWidth={200}
-          height={windowSize.height - 208}
-          rowCount={1000}
-          rowHeight={35}
-          width={windowSize.width - 48}
-        >
-          {Cell}
-        </Grid>)
+              columnCount={columnsCount}
+              columnWidth={200}
+              height={windowSize.height - 208}
+              rowCount={allContent.length + 1}
+              rowHeight={35}
+              width={windowSize.width - 48}
+            >
+              {Cell}
+            </Grid>)
         : (<div>No elements</div>)
       }
       <Modal>

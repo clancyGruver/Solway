@@ -6,6 +6,7 @@ const initialState: ConfigState = {
   editColumnIdx: -1,
   lang: 'EN',
   showModal: false,
+  editCell: false,
 }
 
 export const configSlice = createSlice({

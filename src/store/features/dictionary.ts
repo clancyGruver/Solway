@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '..';
-import { CatalogRequestStore, ColumnItem, Lang } from '../../@types'
+import { CatalogRequest, CatalogRequestStore, ColumnItem, Lang } from '../../@types';
+
+const timeOut = () => new Promise(resolve => setTimeout(resolve, 100));
 
 export const loadDictionary = createAsyncThunk(
   'dictionary/load',
@@ -9,6 +11,13 @@ export const loadDictionary = createAsyncThunk(
     return dictionary;
   }
 );
+
+export const saveDictionary = createAsyncThunk(
+  'dictionary/save',
+  async (serializeDictionary: CatalogRequest) => {
+    await timeOut();
+    return JSON.stringify(serializeDictionary);
+  });
 
 const initialState: CatalogRequestStore = {
   id: 0,
@@ -28,6 +37,24 @@ export const dictionarySlice = createSlice({
   name: 'dictionary',
   initialState,
   reducers: {
+    addRow: (state) => {
+      const itemData: ColumnItem = {
+        EN: '',
+        ES: '',
+        RU: '',
+      };
+
+      state.items.push({
+        id: -1,
+        isActive: true,
+        content: {
+          ...state.columns.reduce((acc, { EN }) => ({
+            ...acc,
+            [EN]: {...itemData},
+          }), {}),
+        },
+      });
+    },
     updateItem: (state, { payload }) => {
       const item = state.items.find(item => item.id === payload.itemIdx);
       if (item) {
@@ -85,12 +112,24 @@ export const dictionarySlice = createSlice({
       .addCase(loadDictionary.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = 'Unknown Error';
+      })
+      .addCase(saveDictionary.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(saveDictionary.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        state.loading = false;
+      })
+      .addCase(saveDictionary.rejected, (state) => {
+        state.loading = false;
+        state.error = 'Unknown Error';
       });
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { updateColumn, addColumn, updateItem } = dictionarySlice.actions;
+export const { updateColumn, addColumn, updateItem, addRow } = dictionarySlice.actions;
 
 export default dictionarySlice.reducer;
 
@@ -122,4 +161,14 @@ export const getItems = createSelector(
       [columnName]: item.content[columnName][lang],
     }), {})
   }))
+);
+export const serializeDictionary = createSelector(
+  getDictionary,
+  (dict) => ({
+    id: dict.id,
+    name: dict.name,
+    columns: dict.columns,
+    isActive: dict.isActive,
+    items: dict.items,
+  })
 );
