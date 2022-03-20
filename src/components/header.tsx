@@ -6,6 +6,17 @@ const Header = () => (
       Solway group test
     </h1>
     <ChangeLang />
+    <div
+      className="
+        absolute top-0 left-0
+        rounded
+        border border-red-800
+        bg-red-200
+        px-2
+      "
+    >
+        Открытие окна диалога редактирования ячейки по двойному клику
+    </div>
   </header>
 
 );
