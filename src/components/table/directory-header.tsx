@@ -37,7 +37,3 @@ const DirectoryHeader = () => {
 };
 
 export default DirectoryHeader;
-
-function dispatch(arg0: { payload: any; type: string; }) {
-  throw new Error("Function not implemented.");
-}

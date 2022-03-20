@@ -4,6 +4,9 @@ import Header from './components/header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLoading, loadDictionary } from './store/features/dictionary';
 import ReactLoading from 'react-loading';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 function App() {
   const dispatch = useDispatch();
@@ -14,9 +17,13 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="grid grid-rows-layout h-screen">
+    <div className="
+      grid grid-rows-layout
+      h-screen
+      overflow-hidden
+    ">
       <Header />
-      <main className="p-6 bg-slate-50">
+      <main className="p-6 bg-slate-100">
         {
           loading
             ? <ReactLoading type="spin" color="blue" className="m-auto" />

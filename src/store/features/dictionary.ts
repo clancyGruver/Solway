@@ -62,9 +62,9 @@ export const dictionarySlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updateColumn, addColumn } = dictionarySlice.actions
+export const { updateColumn, addColumn } = dictionarySlice.actions;
 
-export default dictionarySlice.reducer
+export default dictionarySlice.reducer;
 
 const getDictionary = (state: RootState) => state.dictionary;
 const getLang = (state: RootState) => state.config.lang;

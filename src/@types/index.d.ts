@@ -8,6 +8,13 @@ export type CatalogItemRequest = {
   content: record<ColumnItem['EN'], ColumnItem>,
   isActive: boolean,
 };
+export type DictionaryName = Record<Lang, string>;
+
+export type CatalogItemRequestLanguaged = {
+  id: number,
+  content: record<ColumnItem['EN'], string>,
+  isActive: boolean,
+};
 
 export interface CatalogRequest {
   id: number,

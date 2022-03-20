@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-//@ts-ignore
 import ReactModal from 'react-modal';
 import { useSelector } from 'react-redux';
 import { isShowModal } from '../store/features/config';
