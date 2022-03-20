@@ -6,7 +6,6 @@ export const loadDictionary = createAsyncThunk(
   'dictionary/load',
   async () => {
     const dictionary = await import('../../assets/dictionary.json');
-    console.log(dictionary);
     return dictionary;
   }
 );
@@ -29,14 +28,43 @@ export const dictionarySlice = createSlice({
   name: 'dictionary',
   initialState,
   reducers: {
+    updateItem: (state, { payload }) => {
+      const item = state.items.find(item => item.id === payload.itemIdx);
+      if (item) {
+        item.content = {
+          ...item.content,
+          [payload.columnName]: {
+            ...item.content[payload.columnName],
+            [payload.lang]: payload.newContent
+          },
+        }
+      }
+    },
     updateColumn: (state, { payload: { columnIdx, data } }) => {
+      const newName = data.EN;
+      const oldName = state.columns[columnIdx].EN;
       Object.entries(data).forEach(([key, value]) => {
         //@ts-ignore
         state.columns[columnIdx][key] = value;
       });
+      state.items.forEach((item) => {
+        const val = {...item.content[oldName]};
+        delete item.content[oldName];
+        item.content[newName] = val;
+      })
     },
     addColumn: (state, { payload: { data } }) => {
       state.columns.push(data);
+
+      const itemData: ColumnItem = {
+        EN: '',
+        ES: '',
+        RU: '',
+      };
+
+      state.items.forEach((item) => {
+        item.content[data.EN] = itemData;
+      })
     },
   },
   extraReducers: (builder) => {
@@ -59,15 +87,15 @@ export const dictionarySlice = createSlice({
         state.error = 'Unknown Error';
       });
   }
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { updateColumn, addColumn } = dictionarySlice.actions;
+export const { updateColumn, addColumn, updateItem } = dictionarySlice.actions;
 
 export default dictionarySlice.reducer;
 
 const getDictionary = (state: RootState) => state.dictionary;
-const getLang = (state: RootState) => state.config.lang;
+export const getLang = (state: RootState) => state.config.lang;
 
 export const getColumnsCount = createSelector(getDictionary, (dict) => dict.columns.length);
 export const getLoading = createSelector(getDictionary, (dict) => dict.loading);
@@ -89,6 +117,9 @@ export const getItems = createSelector(
   [getDictionary, getLang],
   (dict, lang: Lang) => dict.items.map((item) => ({
     ...item,
-    content: Object.keys(item.content).map((columnName) => ({[columnName]: item.content[columnName][lang]}))
+    content: Object.keys(item.content).reduce((acc, columnName) => ({
+      ...acc,
+      [columnName]: item.content[columnName][lang],
+    }), {})
   }))
 );

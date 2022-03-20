@@ -5,9 +5,13 @@ import { addColumn, getRawColumns, updateColumn } from "../../store/features/dic
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ColumnItem, Lang } from "../../@types";
 import { getEditColumnIdx, setEditColumnIdx, setShowModal } from "../../store/features/config";
+import { useState } from "react";
+import ReactLoading from 'react-loading';
+
 type Inputs = ColumnItem;
 
 const ColumnEdit = () => {
+  const [isUpdating, setIsUpdating] = useState(false);
   const dispatch = useDispatch();
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
     mode: 'onBlur',
@@ -24,6 +28,7 @@ const ColumnEdit = () => {
   };
 
   const onSubmit: SubmitHandler<ColumnItem> = (data: any) => {
+    setIsUpdating(true);
     if (columnIdx !== -1) {
       dispatch(updateColumn({
         columnIdx,
@@ -35,6 +40,7 @@ const ColumnEdit = () => {
       }));
     }
     closeHandler();
+    setIsUpdating(false);
   };
 
   const columns = useSelector(getRawColumns);
@@ -69,11 +75,13 @@ const ColumnEdit = () => {
         }
         <div className="flex items-center justify-evenly">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="disabled:bg-blue-300 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
             onClick={handleSubmit(onSubmit)}
+            disabled={isUpdating}
           >
             Save
+            {isUpdating && <ReactLoading type="spin" color="blue" />}
           </button>
           <button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
