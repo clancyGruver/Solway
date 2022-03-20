@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getColumns, getItems, getRawColumns, updateItem, getLang } from '../../store/features/dictionary';
 import ColumnEdit from '../forms/column-edit';
 import Modal from '../modal';
-// import DictionaryBody from './body';
 import DirectoryHeader from './directory-header';
 import TableHeaderCell from './table-header-cell';
 import { FixedSizeGrid  as Grid, GridChildComponentProps } from 'react-window';
